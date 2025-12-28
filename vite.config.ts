@@ -5,6 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  base: process.env.GITHUB_ACTIONS ? "/ra-studio2027/" : "/",
   server: {
     host: "::",
     port: 8080,

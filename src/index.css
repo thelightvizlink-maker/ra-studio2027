@@ -1,0 +1,415 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* RA Studio Neomorphism Design System */
+@layer base {
+  :root {
+    /* Core Brand Colors (HSL) */
+    --background: 210 14% 7%;
+    --foreground: 210 20% 95%;
+    
+    --card: 210 12% 10%;
+    --card-foreground: 210 20% 95%;
+    
+    --popover: 210 12% 10%;
+    --popover-foreground: 210 20% 95%;
+    
+    /* Primary - Sky Blue #84C8DD */
+    --primary: 193 55% 69%;
+    --primary-foreground: 210 14% 7%;
+    
+    /* Secondary - Deep Blue #265468 */
+    --secondary: 198 46% 28%;
+    --secondary-foreground: 210 20% 95%;
+    
+    /* Accent - Magenta #EF4681 */
+    --accent: 340 84% 60%;
+    --accent-foreground: 210 20% 95%;
+    
+    /* Muted */
+    --muted: 210 12% 15%;
+    --muted-foreground: 210 15% 60%;
+    
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    
+    /* Borders & Inputs */
+    --border: 210 15% 20%;
+    --input: 210 15% 18%;
+    --ring: 193 55% 69%;
+    
+    --radius: 1rem;
+    
+    /* Division Accent Colors */
+    --studio: 193 55% 69%;
+    --labs: 340 84% 60%;
+    --motion: 22 100% 64%;
+    --press: 42 57% 59%;
+    --sound: 184 59% 30%;
+    
+    /* Special Accents */
+    --gold: 42 57% 59%;
+    --lime: 133 100% 67%;
+    
+    /* Neomorphic Shadows */
+    --neo-light: 210 14% 12%;
+    --neo-dark: 210 14% 4%;
+    --neo-glow: 193 55% 69%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(193 55% 69%), hsl(198 46% 28%));
+    --gradient-accent: linear-gradient(135deg, hsl(340 84% 60%), hsl(22 100% 64%));
+    --gradient-dark: linear-gradient(180deg, hsl(210 14% 7%), hsl(210 14% 4%));
+    
+    /* Sidebar */
+    --sidebar-background: 210 14% 6%;
+    --sidebar-foreground: 210 20% 95%;
+    --sidebar-primary: 193 55% 69%;
+    --sidebar-primary-foreground: 210 14% 7%;
+    --sidebar-accent: 210 12% 15%;
+    --sidebar-accent-foreground: 210 20% 95%;
+    --sidebar-border: 210 15% 15%;
+    --sidebar-ring: 193 55% 69%;
+  }
+
+  .light {
+    --background: 220 20% 97%;
+    --foreground: 210 14% 7%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 210 14% 7%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 14% 7%;
+    
+    --primary: 193 55% 45%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 198 46% 28%;
+    --secondary-foreground: 0 0% 100%;
+    
+    --accent: 340 84% 55%;
+    --accent-foreground: 0 0% 100%;
+    
+    --muted: 220 15% 92%;
+    --muted-foreground: 210 15% 40%;
+    
+    --border: 220 15% 88%;
+    --input: 220 15% 88%;
+    --ring: 193 55% 45%;
+    
+    --neo-light: 0 0% 100%;
+    --neo-dark: 220 15% 88%;
+    --neo-glow: 193 55% 45%;
+    
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 210 14% 7%;
+    --sidebar-primary: 193 55% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 15% 95%;
+    --sidebar-accent-foreground: 210 14% 7%;
+    --sidebar-border: 220 15% 88%;
+    --sidebar-ring: 193 55% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    cursor: none;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  ::selection {
+    background: hsl(var(--primary) / 0.3);
+    color: hsl(var(--foreground));
+  }
+}
+
+@layer components {
+  /* Neomorphic Card Styles */
+  .neo-card {
+    @apply relative rounded-2xl;
+    background: hsl(var(--card));
+    box-shadow: 
+      8px 8px 20px hsl(var(--neo-dark)),
+      -6px -6px 16px hsl(var(--neo-light)),
+      inset 0 0 0 1px hsl(var(--border) / 0.3);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .neo-card:hover {
+    box-shadow: 
+      12px 12px 30px hsl(var(--neo-dark)),
+      -8px -8px 24px hsl(var(--neo-light)),
+      inset 0 0 0 1px hsl(var(--primary) / 0.3),
+      0 0 40px hsl(var(--neo-glow) / 0.15);
+    transform: translateY(-4px);
+  }
+  
+  /* Neomorphic Button */
+  .neo-button {
+    @apply relative px-8 py-4 rounded-xl font-semibold;
+    background: hsl(var(--card));
+    box-shadow: 
+      6px 6px 14px hsl(var(--neo-dark)),
+      -4px -4px 10px hsl(var(--neo-light)),
+      inset 0 0 0 1px hsl(var(--border) / 0.5);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  
+  .neo-button:hover {
+    box-shadow: 
+      2px 2px 6px hsl(var(--neo-dark)),
+      -2px -2px 4px hsl(var(--neo-light)),
+      inset 0 0 0 1px hsl(var(--primary) / 0.5),
+      0 0 20px hsl(var(--neo-glow) / 0.2);
+    transform: scale(0.98);
+  }
+  
+  .neo-button:active {
+    box-shadow: 
+      inset 4px 4px 10px hsl(var(--neo-dark)),
+      inset -4px -4px 10px hsl(var(--neo-light));
+    transform: scale(0.96);
+  }
+  
+  /* Neomorphic Inset */
+  .neo-inset {
+    @apply rounded-xl;
+    box-shadow: 
+      inset 4px 4px 10px hsl(var(--neo-dark)),
+      inset -4px -4px 10px hsl(var(--neo-light));
+  }
+  
+  /* Glowing Border */
+  .glow-border {
+    @apply relative;
+  }
+  
+  .glow-border::before {
+    content: '';
+    @apply absolute inset-0 rounded-2xl;
+    padding: 2px;
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  
+  .glow-border:hover::before {
+    opacity: 1;
+  }
+  
+  /* Glass Effect */
+  .glass {
+    @apply backdrop-blur-xl;
+    background: hsl(var(--card) / 0.6);
+    border: 1px solid hsl(var(--border) / 0.3);
+  }
+  
+  /* Text Gradients */
+  .text-gradient-primary {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+  }
+  
+  .text-gradient-accent {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--accent)), hsl(22 100% 64%));
+  }
+  
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--gold)), hsl(42 70% 70%));
+  }
+  
+  /* Marquee */
+  .marquee-container {
+    @apply overflow-hidden relative;
+  }
+  
+  .marquee-content {
+    display: flex;
+    animation: marquee 30s linear infinite;
+  }
+  
+  .marquee-content:hover {
+    animation-play-state: paused;
+  }
+  
+  /* Interactive Elements */
+  .interactive {
+    @apply transition-all duration-300;
+    cursor: none;
+  }
+  
+  .interactive:hover {
+    @apply scale-[1.02];
+  }
+  
+  /* Division Colors */
+  .division-studio { --division-color: var(--studio); }
+  .division-labs { --division-color: var(--labs); }
+  .division-motion { --division-color: var(--motion); }
+  .division-press { --division-color: var(--press); }
+  .division-sound { --division-color: var(--sound); }
+  
+  .division-card {
+    @apply neo-card p-6;
+  }
+  
+  .division-card:hover {
+    box-shadow: 
+      12px 12px 30px hsl(var(--neo-dark)),
+      -8px -8px 24px hsl(var(--neo-light)),
+      0 0 50px hsl(var(--division-color) / 0.3);
+  }
+}
+
+@layer utilities {
+  /* Tilt Animation */
+  .tilt-card {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+  
+  /* Floating Animation */
+  .float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  /* Pulse Glow */
+  .pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite;
+  }
+  
+  /* Shimmer */
+  .shimmer {
+    @apply relative overflow-hidden;
+  }
+  
+  .shimmer::after {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(var(--primary) / 0.1),
+      transparent
+    );
+    transform: translateX(-100%);
+    animation: shimmer 3s infinite;
+  }
+}
+
+/* Keyframes */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { 
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+  }
+  50% { 
+    box-shadow: 0 0 40px hsl(var(--primary) / 0.5);
+  }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(50px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-50px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes rotateIn {
+  from { opacity: 0; transform: rotate(-10deg) scale(0.9); }
+  to { opacity: 1; transform: rotate(0) scale(1); }
+}
+
+@keyframes wobble {
+  0%, 100% { border-radius: 50%; }
+  25% { border-radius: 40% 60% 60% 40%; }
+  50% { border-radius: 60% 40% 40% 60%; }
+  75% { border-radius: 40% 60% 50% 50%; }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.5);
+}
+
+/* Page Transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.page-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: translateY(-30px);
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}

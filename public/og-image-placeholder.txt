@@ -1,0 +1,2 @@
+<!-- TODO: Add Open Graph image -->
+Replace /og-image.png with your custom 1200x630 image for social media sharing

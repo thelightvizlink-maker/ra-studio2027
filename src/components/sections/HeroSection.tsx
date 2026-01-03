@@ -11,7 +11,7 @@ const HeroSection = () => {
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(``)` }}
+        style={{ backgroundImage: `url(${heroBg})` }}
       >
         <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
       </div>
@@ -99,7 +99,7 @@ const HeroSection = () => {
               <div 
                 key={stat.label} 
                 className="neo-card p-4 text-center interactive"
-                style={{ animationDelay: `s` }}
+                style={{ animationDelay: `${0.5 + index * 0.1}s` }}
               >
                 <p className="text-2xl md:text-3xl font-bold text-primary">{stat.value}</p>
                 <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>

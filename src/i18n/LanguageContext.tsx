@@ -2,8 +2,9 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { en } from './translations/en';
 import { sv } from './translations/sv';
 import { nl } from './translations/nl';
+import { it } from './translations/it';
 
-export type Language = 'en' | 'sv' | 'nl';
+export type Language = 'en' | 'sv' | 'nl' | 'it';
 
 type Translations = typeof en;
 
@@ -17,18 +18,21 @@ const translations: Record<Language, Translations> = {
   en,
   sv,
   nl,
+  it,
 };
 
 export const languageNames: Record<Language, string> = {
-  en: 'EN',
-  sv: 'SV',
-  nl: 'NL',
+  en: 'English',
+  sv: 'Svenska',
+  nl: 'Nederlands',
+  it: 'Italiano',
 };
 
 export const languageFlags: Record<Language, string> = {
   en: '🇬🇧',
   sv: '🇸🇪',
-  nl: '🇳🇱',
+  nl: '🇧🇪',
+  it: '🇮🇹',
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);

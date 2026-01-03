@@ -1,14 +1,17 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Play, Sparkles } from 'lucide-react';
 import heroBg from '@/assets/hero-bg.jpg';
+import { useLanguage } from '@/i18n/LanguageContext';
 
 const HeroSection = () => {
+  const { t } = useLanguage();
+  
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${heroBg})` }}
+        style={{ backgroundImage: `url(``)` }}
       >
         <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
       </div>
@@ -38,7 +41,7 @@ const HeroSection = () => {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 neo-card px-4 py-2 mb-8 animate-fade-in">
             <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm text-muted-foreground">Designs Engineered</span>
+            <span className="text-sm text-muted-foreground">{t.hero.badge}</span>
           </div>
 
           {/* Headline */}
@@ -46,11 +49,11 @@ const HeroSection = () => {
             className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight"
             style={{ animationDelay: '0.1s' }}
           >
-            <span className="text-foreground">Where </span>
-            <span className="text-gradient-primary">Art</span>
+            <span className="text-foreground">{t.hero.title1}</span>
+            <span className="text-gradient-primary">{t.hero.titleArt}</span>
             <br />
-            <span className="text-foreground">Meets </span>
-            <span className="text-gradient-accent">Engineering</span>
+            <span className="text-foreground">{t.hero.title2}</span>
+            <span className="text-gradient-accent">{t.hero.titleEng}</span>
           </h1>
 
           {/* Subheadline */}
@@ -58,9 +61,7 @@ const HeroSection = () => {
             className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in"
             style={{ animationDelay: '0.2s' }}
           >
-            A creative-tech ecosystem bridging design, automation, AI workflows, 
-            music production, publishing, and blockchain art. Premium experiences 
-            for founders, creators, and innovators worldwide.
+            {t.hero.subtitle}
           </p>
 
           {/* CTA Buttons */}
@@ -72,7 +73,7 @@ const HeroSection = () => {
               to="/services"
               className="group neo-button interactive flex items-center gap-3 bg-primary/10 text-primary hover:bg-primary/20"
             >
-              <span>Explore Our Work</span>
+              <span>{t.hero.exploreWork}</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             
@@ -80,7 +81,7 @@ const HeroSection = () => {
               <div className="w-10 h-10 rounded-full neo-inset flex items-center justify-center">
                 <Play className="w-4 h-4 text-primary" />
               </div>
-              <span>Watch Showreel</span>
+              <span>{t.hero.watchShowreel}</span>
             </button>
           </div>
 
@@ -90,15 +91,15 @@ const HeroSection = () => {
             style={{ animationDelay: '0.4s' }}
           >
             {[
-              { label: 'Lines of Code', value: '1M+' },
-              { label: 'Global Clients', value: '200+' },
-              { label: 'Load Time', value: '3s' },
-              { label: 'Support', value: '24/7' },
+              { label: t.hero.stats.linesOfCode, value: '1M+' },
+              { label: t.hero.stats.globalClients, value: '200+' },
+              { label: t.hero.stats.loadTime, value: '3s' },
+              { label: t.hero.stats.support, value: '24/7' },
             ].map((stat, index) => (
               <div 
                 key={stat.label} 
                 className="neo-card p-4 text-center interactive"
-                style={{ animationDelay: `${0.5 + index * 0.1}s` }}
+                style={{ animationDelay: `s` }}
               >
                 <p className="text-2xl md:text-3xl font-bold text-primary">{stat.value}</p>
                 <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>

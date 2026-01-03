@@ -1,69 +1,69 @@
 import AnimatedCounter from '@/components/AnimatedCounter';
 import NeomorphicCard from '@/components/NeomorphicCard';
+import { useLanguage } from '@/i18n/LanguageContext';
 import { Code, Users, Zap, Clock, Globe } from 'lucide-react';
 
 const StatsSection = () => {
+  const { t } = useLanguage();
+  
   const stats = [
     {
       icon: Code,
       value: 1000000,
       suffix: '+',
-      label: 'Lines of Clean Code',
-      description: 'Written with precision and care',
+      label: t.stats.items.code.label,
+      description: t.stats.items.code.description,
     },
     {
       icon: Users,
       value: 200,
       suffix: '+',
-      label: 'Clients Worldwide',
-      description: 'Trusted by creators globally',
+      label: t.stats.items.clients.label,
+      description: t.stats.items.clients.description,
     },
     {
       icon: Zap,
       value: 3,
       suffix: 's',
-      label: 'Average Load Time',
-      description: 'Lightning-fast performance',
+      label: t.stats.items.loadTime.label,
+      description: t.stats.items.loadTime.description,
     },
     {
       icon: Clock,
       value: 24,
       suffix: '/7',
-      label: 'Global Support',
-      description: 'Always here when you need us',
+      label: t.stats.items.support.label,
+      description: t.stats.items.support.description,
     },
     {
       icon: Globe,
       value: 50,
       suffix: '+',
-      label: 'Countries Served',
-      description: 'Borderless creative solutions',
+      label: t.stats.items.countries.label,
+      description: t.stats.items.countries.description,
     },
   ];
 
   return (
     <section className="relative py-24 overflow-hidden">
-      {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-card/50 to-transparent" />
       
       <div className="relative container mx-auto px-4">
-        {/* Section Header */}
         <div className="text-center mb-16">
           <span className="inline-block neo-card px-4 py-2 text-sm text-accent mb-4">
-            Impact & Results
+            {t.stats.badge}
           </span>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="text-foreground">By The </span>
-            <span className="text-gradient-accent">Numbers</span>
+            <span className="text-foreground">{t.stats.title}</span>
+            <span className="text-gradient-accent">{t.stats.titleHighlight}</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Real metrics. Real impact. Delivering excellence at scale.
+            {t.stats.subtitle}
           </p>
         </div>
 
-        {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-          {stats.map((stat, index) => (
+          {stats.map((stat) => (
             <NeomorphicCard
               key={stat.label}
               className="p-6 text-center group"

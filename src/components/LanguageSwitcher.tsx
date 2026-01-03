@@ -7,7 +7,7 @@ const LanguageSwitcher = () => {
   const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
 
-  const languages: Language[] = ['en', 'sv', 'nl'];
+  const languages: Language[] = ['en', 'sv', 'nl', 'it'];
 
   return (
     <div className="relative">
@@ -33,7 +33,7 @@ const LanguageSwitcher = () => {
           />
           
           {/* Dropdown */}
-          <div className="absolute right-0 top-full mt-2 z-50 neo-card rounded-xl overflow-hidden min-w-[120px] animate-fade-in">
+          <div className="absolute right-0 top-full mt-2 z-50 neo-card rounded-xl overflow-hidden min-w-[160px] animate-fade-in">
             {languages.map((lang) => (
               <button
                 key={lang}
@@ -42,13 +42,13 @@ const LanguageSwitcher = () => {
                   setIsOpen(false);
                 }}
                 className={cn(
-                  "w-full px-4 py-3 text-left text-sm flex items-center gap-2 transition-colors",
+                  "w-full px-4 py-3 text-left text-sm flex items-center gap-3 transition-colors",
                   language === lang
-                    ? "text-primary bg-primary/10"
+                    ? "text-primary bg-primary/10 font-medium"
                     : "text-muted-foreground hover:text-foreground hover:bg-card/50"
                 )}
               >
-                <span>{languageFlags[lang]}</span>
+                <span className="text-xl">{languageFlags[lang]}</span>
                 <span>{languageNames[lang]}</span>
               </button>
             ))}

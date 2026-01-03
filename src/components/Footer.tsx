@@ -1,21 +1,23 @@
 import { Link } from 'react-router-dom';
+import { useLanguage } from '@/i18n/LanguageContext';
 import { Github, Twitter, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
 
 const Footer = () => {
+  const { t } = useLanguage();
   const currentYear = new Date().getFullYear();
 
   const footerLinks = {
     services: [
-      { name: 'Web Development', path: '/services#web' },
-      { name: 'UI/UX Design', path: '/services#design' },
-      { name: 'AI & Automation', path: '/services#ai' },
-      { name: 'Video Production', path: '/services#video' },
-      { name: 'Music Production', path: '/services#music' },
+      { name: t.footer.serviceLinks.webDevelopment, path: '/services#web' },
+      { name: t.footer.serviceLinks.uiUxDesign, path: '/services#design' },
+      { name: t.footer.serviceLinks.aiAutomation, path: '/services#ai' },
+      { name: t.footer.serviceLinks.videoProduction, path: '/services#video' },
+      { name: t.footer.serviceLinks.musicProduction, path: '/services#music' },
     ],
     company: [
-      { name: 'About', path: '/about' },
-      { name: 'FAQ', path: '/faq' },
-      { name: 'Contact', path: '/contact' },
+      { name: t.nav.about, path: '/about' },
+      { name: t.nav.faq, path: '/faq' },
+      { name: t.nav.contact, path: '/contact' },
     ],
     divisions: [
       { name: 'RA Studio', color: 'text-studio' },
@@ -35,12 +37,10 @@ const Footer = () => {
 
   return (
     <footer className="relative mt-32 border-t border-border/50">
-      {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background to-transparent pointer-events-none" />
       
       <div className="relative container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          {/* Brand Column */}
           <div className="space-y-6">
             <Link to="/" className="inline-block interactive">
               <div className="flex items-center gap-3">
@@ -55,7 +55,7 @@ const Footer = () => {
             </Link>
             
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Where art meets engineering. Premium creative-tech solutions for founders, creators, and innovators worldwide.
+              {t.footer.description}
             </p>
             
             <div className="flex items-center gap-4">
@@ -72,9 +72,8 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Services Column */}
           <div>
-            <h3 className="font-semibold text-foreground mb-6">Services</h3>
+            <h3 className="font-semibold text-foreground mb-6">{t.footer.services}</h3>
             <ul className="space-y-3">
               {footerLinks.services.map((link) => (
                 <li key={link.name}>
@@ -89,9 +88,8 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Divisions Column */}
           <div>
-            <h3 className="font-semibold text-foreground mb-6">Divisions</h3>
+            <h3 className="font-semibold text-foreground mb-6">{t.footer.divisions}</h3>
             <ul className="space-y-3">
               {footerLinks.divisions.map((division) => (
                 <li key={division.name}>
@@ -103,9 +101,8 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact Column */}
           <div>
-            <h3 className="font-semibold text-foreground mb-6">Contact</h3>
+            <h3 className="font-semibold text-foreground mb-6">{t.footer.contact}</h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-muted-foreground text-sm">
                 <Mail className="w-5 h-5 text-primary shrink-0 mt-0.5" />
@@ -113,28 +110,27 @@ const Footer = () => {
               </li>
               <li className="flex items-start gap-3 text-muted-foreground text-sm">
                 <Phone className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <span>Available 24/7</span>
+                <span>{t.footer.available247}</span>
               </li>
               <li className="flex items-start gap-3 text-muted-foreground text-sm">
                 <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <span>Global Remote Studio</span>
+                <span>{t.footer.globalRemoteStudio}</span>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom Bar */}
         <div className="mt-16 pt-8 border-t border-border/30 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-muted-foreground text-sm">
-            © {currentYear} RA Studio. All rights reserved.
+            {t.footer.copyright.replace('{year}', currentYear.toString())}
           </p>
           
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
             <span className="cursor-default">
-              Privacy Policy
+              {t.footer.privacyPolicy}
             </span>
             <span className="cursor-default">
-              Terms of Service
+              {t.footer.termsOfService}
             </span>
           </div>
         </div>

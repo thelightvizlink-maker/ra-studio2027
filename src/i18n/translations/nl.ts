@@ -1,4 +1,10 @@
 export const nl = {
+  // Cookie Consent
+  cookie: {
+    message: "We gebruiken cookies om uw ervaring te verbeteren en websiteverkeer te analyseren. Door op 'Accepteren' te klikken, stemt u in met ons gebruik van cookies.",
+    accept: "Accepteren",
+    decline: "Weigeren",
+  },
   // Navigation
   nav: {
     home: 'Home',

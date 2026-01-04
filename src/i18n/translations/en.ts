@@ -1,4 +1,10 @@
 export const en = {
+  // Cookie Consent
+  cookie: {
+    message: "We use cookies to enhance your experience and analyze site traffic. By clicking 'Accept', you consent to our use of cookies.",
+    accept: "Accept",
+    decline: "Decline",
+  },
   // Navigation
   nav: {
     home: 'Home',

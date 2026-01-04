@@ -1,4 +1,10 @@
 export const sv = {
+  // Cookie Consent
+  cookie: {
+    message: "Vi använder cookies för att förbättra din upplevelse och analysera webbplatstrafik. Genom att klicka på 'Acceptera' samtycker du till vår användning av cookies.",
+    accept: "Acceptera",
+    decline: "Avböj",
+  },
   // Navigation
   nav: {
     home: 'Hem',

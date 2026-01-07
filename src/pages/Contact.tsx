@@ -4,6 +4,15 @@ import NeomorphicCard from '@/components/NeomorphicCard';
 import { Mail, MapPin, Send, Clock, MessageSquare, CheckCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
+import emailjs from '@emailjs/browser';
+
+// EmailJS Configuration
+const EMAILJS_SERVICE_ID = 'service_ki4invi';
+const EMAILJS_TEMPLATE_ID = 'template_8790253';
+const EMAILJS_PUBLIC_KEY = '1laPKJ3n8PpUMnbo0';
+
+// Initialize EmailJS
+emailjs.init(EMAILJS_PUBLIC_KEY);
 
 const FLEXSUBMIT_API = 'https://api.flexsubmit.com/api/forms/afa94b93-130a-4bb5-b9fd-54dd01fe0f03/submit';
 

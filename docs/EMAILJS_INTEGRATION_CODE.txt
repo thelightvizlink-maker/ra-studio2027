@@ -1,0 +1,51 @@
+// EmailJS Configuration
+// Add this at the top of Contact.tsx after imports
+
+import emailjs from '@emailjs/browser';
+
+// EmailJS credentials
+const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID'; // Get from dashboard
+const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID'; // Get from dashboard  
+const EMAILJS_PUBLIC_KEY = 'jRWa8Ax9wAFsufP-LEpuE';
+
+// Initialize EmailJS
+emailjs.init(EMAILJS_PUBLIC_KEY);
+
+// In your onSubmit function:
+const onSubmit = async (data: ContactFormData) => {
+  try {
+    setIsSubmitting(true);
+    
+    // Send email via EmailJS
+    const result = await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      {
+        from_name: data.fullName,
+        from_email: data.email,
+        company_role: data.companyRole,
+        phone: data.phone,
+        product_service: data.productService,
+        additional_services: data.additionalServices,
+        inquiry_details: data.inquiryDetails,
+        message: data.message,
+        to_email: 'your@email.com', // Your email where you receive messages
+      }
+    );
+
+    if (result.status === 200) {
+      toast.success(t.toast.messageSent, {
+        description: t.toast.messageSentDesc,
+      });
+      reset(); // Clear form
+      setShowThankYou(true);
+    }
+  } catch (error) {
+    console.error('EmailJS Error:', error);
+    toast.error(t.toast.submissionFailed, {
+      description: t.toast.submissionFailedDesc,
+    });
+  } finally {
+    setIsSubmitting(false);
+  }
+};

@@ -6,8 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { LanguageProvider } from "./i18n/LanguageContext";
-
-import { initGA, logPageView } from './lib/analytics';
+import CookieConsentBanner from './components/CookieConsent';
+import { logPageView } from './lib/analytics';
 import CustomCursor from "./components/CustomCursor";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
@@ -30,11 +30,6 @@ const AppContent = () => {
     }
   }, [location]);
 
-  // Initialize analytics with Cookiebot
-  useEffect(() => {
-    initGA();
-  }, []);
-
   return (
     <>
       <CustomCursor />
@@ -48,6 +43,7 @@ const AppContent = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
+      <CookieConsentBanner />
     </>
   );
 };

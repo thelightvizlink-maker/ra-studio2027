@@ -257,8 +257,15 @@ export const en = {
     submissionFailedDesc: 'Please try again or contact us directly via email.',
   },
 
+
+
+  
+
+  
+
   // Common
   common: {
     required: '*',
   },
+
 };

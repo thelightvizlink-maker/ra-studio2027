@@ -256,6 +256,32 @@ export const nl = {
     submissionFailed: 'Verzending mislukt',
     submissionFailedDesc: 'Probeer het opnieuw of neem rechtstreeks contact met ons op via e-mail.',
   },
+  // Services Page (Vereenvoudigd)
+  servicesPage: {
+    badge: 'Diensten & Prijzen',
+    title: 'Premium Diensten, ',
+    titleHighlight: 'Eerlijke Prijzen',
+    subtitle: 'Vijf gespecialiseerde divisies. Één verenigd ecosysteem. De eerste 100 klanten krijgen exclusieve early-bird prijzen.',
+    getStarted: 'Ga Verder',
+    contactUs: 'Neem Contact Op',
+    earlyBird: 'Early Bird',
+    regular: 'Regulier',
+    
+    divisions: {
+      studio: { name: 'RA Studio', tagline: 'Web & Product' },
+      labs: { name: 'RA Labs', tagline: 'AI & Prompt Engineering', badge: '50% Minder • Levert in 24u' },
+      motion: { name: 'RA Motion', tagline: 'Video & Montage' },
+      press: { name: 'RA Press', tagline: 'Documenten & Boeken' },
+      sound: { name: 'RA Sound', tagline: 'Muziekproductie' },
+    },
+    
+    tiers: {
+      basic: 'Basis',
+      standard: 'Standaard',
+      pro: 'Pro',
+    },
+  },
+
 
   // Common
   common: {

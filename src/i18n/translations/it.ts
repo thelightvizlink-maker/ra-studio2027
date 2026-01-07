@@ -256,6 +256,32 @@ export const it = {
     submissionFailed: 'Invio fallito',
     submissionFailedDesc: 'Riprova o contattaci direttamente via email.',
   },
+  // Services Page (Semplificato)
+  servicesPage: {
+    badge: 'Servizi & Prezzi',
+    title: 'Servizi Premium, ',
+    titleHighlight: 'Prezzi Equi',
+    subtitle: 'Cinque divisioni specializzate. Un ecosistema unificato. I primi 100 clienti ottengono prezzi esclusivi early-bird.',
+    getStarted: 'Inizia Ora',
+    contactUs: 'Contattaci',
+    earlyBird: 'Early Bird',
+    regular: 'Regolare',
+    
+    divisions: {
+      studio: { name: 'RA Studio', tagline: 'Web & Prodotto' },
+      labs: { name: 'RA Labs', tagline: 'AI & Prompt Engineering', badge: '50% Meno • Consegna in 24h' },
+      motion: { name: 'RA Motion', tagline: 'Video & Editing' },
+      press: { name: 'RA Press', tagline: 'Documenti & Libri' },
+      sound: { name: 'RA Sound', tagline: 'Produzione Musicale' },
+    },
+    
+    tiers: {
+      basic: 'Base',
+      standard: 'Standard',
+      pro: 'Pro',
+    },
+  },
+
 
   // Common
   common: {

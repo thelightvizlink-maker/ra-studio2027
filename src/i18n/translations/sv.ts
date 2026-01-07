@@ -256,6 +256,32 @@ export const sv = {
     submissionFailed: 'Skickning misslyckades',
     submissionFailedDesc: 'Försök igen eller kontakta oss direkt via e-post.',
   },
+  // Services Page (Förenklad)
+  servicesPage: {
+    badge: 'Tjänster & Priser',
+    title: 'Premiumtjänster, ',
+    titleHighlight: 'Rättvisa Priser',
+    subtitle: 'Fem specialiserade divisioner. Ett enat ekosystem. De första 100 kunderna får exklusiva early-bird-priser.',
+    getStarted: 'Kom Igång',
+    contactUs: 'Kontakta Oss',
+    earlyBird: 'Early Bird',
+    regular: 'Ordinarie',
+    
+    divisions: {
+      studio: { name: 'RA Studio', tagline: 'Webb & Produkt' },
+      labs: { name: 'RA Labs', tagline: 'AI & Prompt Engineering', badge: '50% Mindre • Levereras på 24h' },
+      motion: { name: 'RA Motion', tagline: 'Video & Redigering' },
+      press: { name: 'RA Press', tagline: 'Dokument & Böcker' },
+      sound: { name: 'RA Sound', tagline: 'Musikproduktion' },
+    },
+    
+    tiers: {
+      basic: 'Basic',
+      standard: 'Standard',
+      pro: 'Pro',
+    },
+  },
+
 
   // Common
   common: {

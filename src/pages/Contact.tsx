@@ -48,6 +48,23 @@ const Contact = () => {
     setIsSubmitting(true);
     
     try {
+      // Send email via EmailJS
+      const result = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name: formData.fullName,
+          from_email: formData.email,
+          company_role: formData.companyRole,
+          phone: formData.phone,
+          product_service: formData.productService,
+          additional_services: formData.additionalServices,
+          inquiry_details: formData.inquiryDetails,
+          message: formData.message,
+        }
+      );
+
+      if (result.status === 200) {
       // Validate input before submission
       const validatedData = contactSchema.parse(formData);
       

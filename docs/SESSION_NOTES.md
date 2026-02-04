@@ -174,3 +174,94 @@ npm run build
 **Session End Time:** 2025-12-28 ~09:00 AM
 **Duration:** ~45 minutes
 **Next Session:** Vercel deployment + custom domain setup
+
+---
+
+# Session Notes - 2026-01-18
+
+## 🎯 Session Goals
+1. Expand languages + flags ✅
+2. Add RTL for Arabic ✅
+3. Localize Services pricing ✅
+4. Create RAG + CRM automation docs ✅
+
+---
+
+## 📝 Decisions Made
+- Added Arabic (Saudi) with RTL layout.
+- Korean/Japanese/Chinese are text-only (no flags).
+- Portuguese is auto-detect only (hidden from dropdown).
+- Prices convert from USD using fixed rates and round to 5/10.
+
+---
+
+## 🔧 Technical Implementations
+- Added new translations: DA, DE-DE, DE-CH, DE-LI, FR-CH, ES-ES, PT-PT, KO, JA, ZH-CN, ZH-HK, AR-SA.
+- Updated LanguageContext to handle auto-detect and RTL.
+- Updated Services pricing formatting with currency conversion.
+- Added RAG and automation docs for CRM chat + voice assistant.
+
+---
+
+## 📋 Handoff Notes for Next Session
+### What's Working
+- Language dropdown shows updated flags and text-only languages.
+- Arabic switches site to RTL.
+- Services pricing converts per language.
+- RAG + CRM docs added to `docs/`.
+
+### What's Needed
+1. QA pass on RTL layout (spacing + alignment).
+2. Validate currency rounding on low-price tiers.
+3. Confirm dropdown ordering and auto-detect behavior.
+
+---
+
+**Session End Time:** 2026-01-18 ~02:30 AM
+**Next Session:** QA + UX polish
+
+---
+
+# Session Notes - 2026-01-27
+
+## Session Goals
+1. Fix lint blockers and investigate Vercel regression
+2. Align docs with the current code
+
+---
+
+## Findings (Root-Cause Candidates)
+- `src/App.tsx` had a corrupted route line:
+  - A stray `` `n `` token was injected between routes
+  - This is the kind of syntax issue that can break builds or routing
+- `react-cookie-consent` was imported in `src/components/CookieConsent.tsx` but not installed
+  - `npm run build` failed before this was fixed
+- Lint errors existed in:
+  - `src/components/ui/command.tsx`
+  - `src/components/ui/textarea.tsx`
+  - `tailwind.config.ts`
+
+---
+
+## Fixes Applied (Local)
+1. Repaired routes in `src/App.tsx`
+2. Replaced empty interfaces with type aliases in:
+   - `src/components/ui/command.tsx`
+   - `src/components/ui/textarea.tsx`
+3. Replaced `require("tailwindcss-animate")` with an ES import in `tailwind.config.ts`
+4. Installed the missing dependency:
+   - `npm i react-cookie-consent`
+5. Validation:
+   - `npm run lint` completes with warnings only
+   - `npm run build` now succeeds
+
+---
+
+## Next Steps (Important)
+1. Redeploy to Vercel after these fixes are committed.
+2. Verify the live site visually:
+   - Hero title size/position
+   - Contact form rendering and submit flow
+   - Neomorphic and 3D card effects
+3. Address warnings noted during build:
+   - Duplicate `servicesPage` keys in `nl.ts`, `sv.ts`, and `it.ts`

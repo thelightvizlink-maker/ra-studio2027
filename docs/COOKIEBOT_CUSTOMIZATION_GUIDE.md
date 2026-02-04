@@ -4,13 +4,16 @@
 **Dashboard:** https://manage.cookiebot.com  
 **Current Mode:** Opt-in (GDPR compliant) ✅
 
+> Important: Cookiebot is **not** currently installed in this codebase.  
+> The live implementation uses `react-cookie-consent` in `src/components/CookieConsent.tsx`.
+
 ---
 
 ## ✅ WHAT'S ALREADY CONFIGURED
 
-1. **Cookiebot Installed:** Script added to index.html
+1. **Custom Cookie Banner:** `src/components/CookieConsent.tsx`
 2. **Google Analytics Integration:** GA4 waits for consent
-3. **Auto-blocking:** Cookies blocked until user accepts
+3. **Consent Storage:** Uses `localStorage` key `cookie-consent`
 4. **Consent Mode:** Opt-in (strict GDPR)
 
 ---
@@ -173,12 +176,12 @@ After customization:
 
 ## 🎉 CURRENT STATUS
 
-✅ **Cookiebot is installed and working**  
 ✅ **Opt-in mode (GDPR compliant)**  
 ✅ **Google Analytics integrated**  
-⏳ **Customization optional** (works fine as-is)
+✅ **Cookie banner implemented in code**  
+⏳ **Cookiebot optional** (requires adding the script to `index.html`)
 
-**You can customize design anytime in dashboard**
+**If you want Cookiebot specifically, add its script first, then use this dashboard guide.**
 
 ---
 

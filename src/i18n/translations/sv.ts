@@ -125,16 +125,6 @@ export const sv = {
     more: 'till',
   },
 
-  // Services Page
-  servicesPage: {
-    badge: 'Tjänster & Priser',
-    title: 'Premium Tjänster, ',
-    titleHighlight: 'Tillgängliga Priser',
-    subtitle: 'Fem specialiserade divisioner. Ett enhetligt ekosystem. De första 100 kunderna får exklusiva early-bird-priser.',
-    getStarted: 'Kom Igång',
-    first100: 'Första 100',
-  },
-
   // About Page
   aboutPage: {
     badge: 'Om Oss',
@@ -208,7 +198,7 @@ export const sv = {
     },
     info: {
       email: 'E-post',
-      emailValue: 'contact@rastudio.dev',
+      emailValue: 'hello@rastudio.se',
       availability: 'Tillgänglighet',
       availabilityValue: '24/7 Global Support',
       location: 'Plats',
@@ -263,6 +253,7 @@ export const sv = {
     titleHighlight: 'Rättvisa Priser',
     subtitle: 'Fem specialiserade divisioner. Ett enat ekosystem. De första 100 kunderna får exklusiva early-bird-priser.',
     getStarted: 'Kom Igång',
+    first100: 'Första 100',
     contactUs: 'Kontakta Oss',
     earlyBird: 'Early Bird',
     regular: 'Ordinarie',

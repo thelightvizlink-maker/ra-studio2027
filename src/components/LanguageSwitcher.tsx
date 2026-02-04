@@ -1,23 +1,33 @@
 import { useState } from 'react';
-import { useLanguage, Language, languageNames, languageFlags } from '@/i18n/LanguageContext';
+import { useLanguage, languageNames, languageFlags, selectableLanguages } from '@/i18n/LanguageContext';
 import { cn } from '@/lib/utils';
 import { Globe, ChevronDown } from 'lucide-react';
 
-const LanguageSwitcher = () => {
+type LanguageSwitcherProps = {
+  className?: string;
+  buttonClassName?: string;
+};
+
+const LanguageSwitcher = ({ className, buttonClassName }: LanguageSwitcherProps) => {
   const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
-
-  const languages: Language[] = ['en', 'sv', 'nl', 'it'];
+  const hasFlag = Boolean(languageFlags[language]);
 
   return (
-    <div className="relative">
+    <div className={cn('relative', className)}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="neo-button interactive flex items-center gap-2 px-3 py-2 text-sm"
+        className={cn(
+          'neo-button interactive flex items-center gap-2 px-3 py-2 text-sm',
+          buttonClassName
+        )}
         aria-label="Change language"
       >
         <Globe className="w-4 h-4 text-muted-foreground" />
-        <span className="text-foreground">{languageFlags[language]} {languageNames[language]}</span>
+        <span className="text-foreground flex items-center gap-2">
+          {hasFlag && <span className="text-xl">{languageFlags[language]}</span>}
+          <span>{languageNames[language]}</span>
+        </span>
         <ChevronDown className={cn(
           "w-3 h-3 text-muted-foreground transition-transform duration-200",
           isOpen && "rotate-180"
@@ -33,8 +43,11 @@ const LanguageSwitcher = () => {
           />
           
           {/* Dropdown */}
-          <div className="absolute right-0 top-full mt-2 z-50 neo-card rounded-xl overflow-hidden min-w-[160px] animate-fade-in">
-            {languages.map((lang) => (
+          <div
+            className="absolute right-0 top-full mt-2 z-50 neo-card rounded-xl overflow-hidden min-w-[160px] max-h-72 overflow-y-auto overscroll-contain animate-fade-in"
+            onWheel={(event) => event.stopPropagation()}
+          >
+            {selectableLanguages.map((lang) => (
               <button
                 key={lang}
                 onClick={() => {
@@ -48,7 +61,7 @@ const LanguageSwitcher = () => {
                     : "text-muted-foreground hover:text-foreground hover:bg-card/50"
                 )}
               >
-                <span className="text-xl">{languageFlags[lang]}</span>
+                {languageFlags[lang] && <span className="text-xl">{languageFlags[lang]}</span>}
                 <span>{languageNames[lang]}</span>
               </button>
             ))}

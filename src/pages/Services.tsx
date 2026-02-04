@@ -1,6 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import NeomorphicCard from '@/components/NeomorphicCard';
+import { useLanguage } from '@/i18n/LanguageContext';
+import { formatPrice } from '@/lib/pricing';
 import { 
   Code2, 
   Palette, 
@@ -16,6 +18,9 @@ import {
 } from 'lucide-react';
 
 const Services = () => {
+  const { t, language } = useLanguage();
+  const first100Label = t.servicesPage?.first100 || 'First 100';
+  const getStartedLabel = t.servicesPage?.getStarted || 'Get Started';
   const divisions = [
     {
       id: 'studio',
@@ -160,14 +165,14 @@ const Services = () => {
         <section className="container mx-auto px-4 py-16">
           <div className="text-center mb-16">
             <span className="inline-block neo-card px-4 py-2 text-sm text-primary mb-4">
-              Services & Pricing
+              {t.servicesPage.badge}
             </span>
             <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              <span className="text-foreground">Premium Services, </span>
-              <span className="text-gradient-primary">Accessible Prices</span>
+              <span className="text-foreground">{t.servicesPage.title}</span>
+              <span className="text-gradient-primary">{t.servicesPage.titleHighlight}</span>
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-              Five specialized divisions. One unified ecosystem. First 100 clients get exclusive early-bird pricing.
+              {t.servicesPage.subtitle}
             </p>
           </div>
         </section>
@@ -213,12 +218,12 @@ const Services = () => {
                           <div className="mb-4">
                             {service.promo ? (
                               <div className="flex items-baseline gap-2">
-                                <span className="text-2xl font-bold text-primary">{service.promo}</span>
-                                <span className="text-sm text-muted-foreground line-through">{service.price}</span>
-                                <span className="text-xs px-2 py-0.5 rounded bg-lime/20 text-lime">First 100</span>
+                                <span className="text-2xl font-bold text-primary">{formatPrice(service.promo, language)}</span>
+                                <span className="text-sm text-muted-foreground line-through">{formatPrice(service.price, language)}</span>
+                                <span className="text-xs px-2 py-0.5 rounded bg-lime/20 text-lime">{first100Label}</span>
                               </div>
                             ) : (
-                              <span className="text-2xl font-bold text-primary">{service.price}</span>
+                              <span className="text-2xl font-bold text-primary">{formatPrice(service.price, language)}</span>
                             )}
                           </div>
                           
@@ -235,7 +240,7 @@ const Services = () => {
                             to="/contact"
                             className={`mt-6 neo-button interactive text-center text-sm text-${division.color} hover:bg-${division.color}/10`}
                           >
-                            Get Started
+                            {getStartedLabel}
                           </Link>
                         </div>
                       </NeomorphicCard>

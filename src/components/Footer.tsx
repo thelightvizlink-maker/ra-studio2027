@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/i18n/LanguageContext';
-import { Github, Twitter, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
+import { Github, Twitter, Linkedin, Mail, MapPin, Phone, MessageCircle, Send } from 'lucide-react';
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -32,7 +32,7 @@ const Footer = () => {
     { icon: Twitter, href: '#', label: 'Twitter' },
     { icon: Github, href: '#', label: 'GitHub' },
     { icon: Linkedin, href: '#', label: 'LinkedIn' },
-    { icon: Mail, href: 'mailto:contact@rastudio.dev', label: 'Email' },
+    { icon: Mail, href: 'mailto:hello@rastudio.se', label: 'Email' },
   ];
 
   return (
@@ -106,7 +106,25 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-muted-foreground text-sm">
                 <Mail className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <span>contact@rastudio.dev</span>
+                <span>hello@rastudio.se</span>
+              </li>
+              <li className="flex items-start gap-3 text-muted-foreground text-sm">
+                <MessageCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                <a
+                  className="interactive hover:text-primary transition-colors"
+                  href="https://wa.me/46792012862"
+                >
+                  WhatsApp Business: +46 792 012 862
+                </a>
+              </li>
+              <li className="flex items-start gap-3 text-muted-foreground text-sm">
+                <Send className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                <a
+                  className="interactive hover:text-primary transition-colors"
+                  href="https://t.me/+46792012862"
+                >
+                  Telegram: +46 792 012 862
+                </a>
               </li>
               <li className="flex items-start gap-3 text-muted-foreground text-sm">
                 <Phone className="w-5 h-5 text-primary shrink-0 mt-0.5" />

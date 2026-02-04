@@ -1,6 +1,6 @@
 # RA Studio Portal - Project Status
 
-## 📊 Overall Progress: 75% Complete
+## 📊 Overall Progress: 80% Complete
 
 ### ✅ Phase 1: Repository & Setup (100%)
 - [x] Remove duplicate folder
@@ -24,12 +24,11 @@
 
 **Live URL:** https://thelightvizlink-maker.github.io/ra-studio2027/
 
-### ⏳ Phase 4: Vercel Deployment (0%)
-- [ ] Install Vercel CLI or use web interface
-- [ ] Import repository to Vercel
-- [ ] Configure build settings
-- [ ] Deploy to production
-- [ ] Verify deployment
+### 🚧 Phase 4: Vercel Deployment (in progress)
+- [x] `vercel.json` present for SPA routing
+- [x] Local `npm run build` succeeds (27-JAN-2026)
+- [ ] Redeploy to Vercel and review build logs
+- [ ] Verify live visuals (hero title size/position, forms, 3D cards)
 
 ### ⏳ Phase 5: Custom Domain Setup (0%)
 - [ ] Choose domain from Cloudflare
@@ -42,33 +41,34 @@
 
 ## 🎯 Next Actions
 
-1. **Sign in to Vercel** (https://vercel.com/login)
-2. **Import repository:** `thelightvizlink-maker/ra-studio2027`
-3. **Deploy with default Vite settings**
-4. **Provide custom domain name**
-5. **Configure Cloudflare DNS**
+1. Run `npm run lint && npm run build` before each deploy.
+2. Redeploy the latest commit to Vercel.
+3. Open the live site and confirm:
+   - Home hero typography and layout
+   - Contact form renders and submits
+   - Neomorphic/3D effects appear
+4. If the live site still looks like a skeleton, check Vercel build logs first.
 
 ---
 
 ## 📂 Important Files & Locations
 
 ```
-C:\MVP\ra-studio\
+C:\users\ricka\web_app_11\mvp\ai.rastudio.se\
 ├── docs/
-│   ├── DEPLOYMENT_GUIDE.md     # Detailed deployment steps
+│   ├── DEPLOYMENT_GUIDE.md     # Deployment steps and notes
 │   ├── PROJECT_STATUS.md       # This file
+│   ├── RA_Z_Investigation.md   # Render/deploy regression notes
 │   └── SESSION_NOTES.md        # Session history and decisions
-├── .github/workflows/
-│   └── deploy.yml              # GitHub Actions workflow
-├── public/
-│   ├── favicon.png             # Custom RA Studio favicon (3.6MB)
-│   └── og-image-placeholder.txt # TODO: Add OG image
+├── public/                     # Static public assets (favicons, etc.)
 ├── src/
-│   ├── App.tsx                 # Router with basename configured
-│   └── ... (React components)
-├── vite.config.ts              # Base path configuration
-├── index.html                  # Updated meta tags & favicon
-└── package.json                # Project: ra-studio-portal
+│   ├── App.tsx                 # Router + providers + cookie gating
+│   ├── pages/                  # Route-level pages
+│   └── components/             # UI and sections
+├── vercel.json                 # SPA rewrites + asset cache headers
+├── vite.config.ts              # Vite config
+├── index.html                  # Root HTML shell
+└── package.json                # Scripts + dependencies
 ```
 
 ---
@@ -85,12 +85,14 @@ C:\MVP\ra-studio\
 
 ## ⚠️ Known Issues & Notes
 
-1. **Favicon Size:** Current favicon.png is 3.6MB - consider optimizing to <100KB
-2. **Open Graph Image:** Placeholder created, need actual 1200x630px image
-3. **Vercel CLI:** npm install failed due to memory - using web interface instead
-4. **DNS Propagation:** Allow 5-10 minutes after Cloudflare DNS changes
+1. **Large Assets:** Several logo images are multi-megabyte; consider optimization.
+2. **Open Graph Image:** Placeholder exists; add an actual 1200x630 image.
+3. **Recent Regression Root Cause (fixed locally):**
+   - Corrupted route line in `src/App.tsx`
+   - Missing dependency: `react-cookie-consent`
+4. **Translations Warning:** Duplicate `servicesPage` keys in `src/i18n/translations/nl.ts`, `src/i18n/translations/sv.ts`, and `src/i18n/translations/it.ts`.
 
 ---
 
-**Last Updated:** 2025-12-28 08:50 AM
-**Next Session:** Continue with Vercel deployment
+**Last Updated:** 2026-01-27
+**Next Session:** Redeploy to Vercel and verify live UI

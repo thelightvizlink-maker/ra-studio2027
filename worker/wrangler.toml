@@ -1,0 +1,12 @@
+name = "ra-visitor"
+main = "visitor.js"
+compatibility_date = "2024-10-01"
+
+kv_namespaces = [
+  # Replace with your real KV namespace id from Cloudflare dashboard
+  { binding = "VISITOR_KV", id = "REPLACE_WITH_KV_ID" }
+]
+
+# Use `wrangler secret put IPINFO_TOKEN` and `wrangler secret put RECAPTCHA_SECRET`
+# to keep tokens out of source control.
+

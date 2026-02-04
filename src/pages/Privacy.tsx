@@ -110,7 +110,7 @@ const Privacy = () => {
               <p className="leading-relaxed mb-2">We use:</p>
               <ul className="list-disc list-inside space-y-2 ml-4">
                 <li><strong>Google Analytics 4:</strong> Analytics and insights</li>
-                <li><strong>Cookiebot:</strong> Cookie consent management</li>
+                <li><strong>Cookie consent banner:</strong> Custom implementation using react-cookie-consent</li>
                 <li><strong>Vercel:</strong> Website hosting</li>
                 <li><strong>Cloudflare:</strong> DNS and security</li>
               </ul>
@@ -120,7 +120,7 @@ const Privacy = () => {
               <h2 className="text-2xl font-semibold text-foreground mb-4">Contact Us</h2>
               <p className="leading-relaxed">
                 For privacy-related questions or to exercise your rights:<br />
-                Email: contact@rastudio.se<br />
+                Email: hello@rastudio.se<br />
                 <br />
                 Data Controller: RA Studio<br />
                 Location: Global Remote Studio

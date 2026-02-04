@@ -125,16 +125,6 @@ export const nl = {
     more: 'meer',
   },
 
-  // Services Page
-  servicesPage: {
-    badge: 'Diensten & Prijzen',
-    title: 'Premium Diensten, ',
-    titleHighlight: 'Toegankelijke Prijzen',
-    subtitle: 'Vijf gespecialiseerde divisies. Eén verenigd ecosysteem. De eerste 100 klanten krijgen exclusieve early-bird prijzen.',
-    getStarted: 'Aan de Slag',
-    first100: 'Eerste 100',
-  },
-
   // About Page
   aboutPage: {
     badge: 'Over Ons',
@@ -208,7 +198,7 @@ export const nl = {
     },
     info: {
       email: 'E-mail',
-      emailValue: 'contact@rastudio.dev',
+      emailValue: 'hello@rastudio.se',
       availability: 'Beschikbaarheid',
       availabilityValue: '24/7 Wereldwijde Ondersteuning',
       location: 'Locatie',
@@ -263,6 +253,7 @@ export const nl = {
     titleHighlight: 'Eerlijke Prijzen',
     subtitle: 'Vijf gespecialiseerde divisies. Één verenigd ecosysteem. De eerste 100 klanten krijgen exclusieve early-bird prijzen.',
     getStarted: 'Ga Verder',
+    first100: 'Eerste 100',
     contactUs: 'Neem Contact Op',
     earlyBird: 'Early Bird',
     regular: 'Regulier',

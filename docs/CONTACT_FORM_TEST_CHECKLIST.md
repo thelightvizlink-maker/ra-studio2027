@@ -18,8 +18,8 @@
 - [ ] Fill form completely
 - [ ] Click "Send Message"
 - [ ] See success toast: "Message sent!"
-- [ ] Form should reset
-- [ ] Thank you message appears
+- [ ] Thank you screen appears ("Message Received!")
+- [ ] Click "Send Another Message" to return to the form
 
 ### Swedish:
 - [ ] Switch to Swedish (language switcher)
@@ -47,7 +47,11 @@
 - [ ] Reconnect
 - [ ] Retry → Should work
 
-## Test 5: Mobile Testing
+## Test 5: Anti-Spam Hardening
+- [ ] Submit once successfully
+- [ ] Immediately try again → Should show "Please wait a moment"
+
+## Test 6: Mobile Testing
 - [ ] Open on mobile device
 - [ ] Test form submission
 - [ ] Verify responsive design

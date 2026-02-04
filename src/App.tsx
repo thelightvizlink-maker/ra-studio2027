@@ -8,7 +8,9 @@ import { HelmetProvider } from "react-helmet-async";
 import { LanguageProvider } from "./i18n/LanguageContext";
 import CookieConsentBanner from './components/CookieConsent';
 import { logPageView } from './lib/analytics';
+import ErrorBoundary from "./components/ErrorBoundary";
 import CustomCursor from "./components/CustomCursor";
+import VisitorBadge from "./components/VisitorBadge";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 import Index from "./pages/Index";
@@ -33,6 +35,7 @@ const AppContent = () => {
 
   return (
     <>
+      <VisitorBadge />
       <CustomCursor />
       <Navigation />
       <Routes>
@@ -40,7 +43,8 @@ const AppContent = () => {
         <Route path="/services" element={<Services />} />
         <Route path="/about" element={<About />} />
         <Route path="/faq" element={<FAQ />} />
-        <Route path="/privacy" element={<Privacy />} />`n              <Route path="/contact" element={<Contact />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
@@ -57,7 +61,9 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <AppContent />
+            <ErrorBoundary>
+              <AppContent />
+            </ErrorBoundary>
           </BrowserRouter>
         </TooltipProvider>
       </LanguageProvider>

@@ -1,7 +1,7 @@
 # 🔌 API & STATE MANAGEMENT EXPLAINED
 
-**Date:** 4-JAN-2026 00:15 (Sweden Time)  
-**Author:** RovoDev
+**Last Updated:** 27-JAN-2026 (Sweden Time)  
+**Context Update:** The contact form submits to FlexSubmit in `src/pages/Contact.tsx`.
 
 ---
 
@@ -24,20 +24,22 @@ Customer (React) receives and displays pasta
 
 ---
 
-## 2️⃣ YOUR CURRENT SITUATION: NO API YET
+## 2️⃣ CURRENT CONTACT FORM: FLEXSUBMIT API (WORKING)
 
 ### Contact Form Flow (Current):
 ```
-User fills form → React Hook Form validates → ???
-                                                ↓
-                                          NOWHERE!
+User fills form
+  → Zod validates + sanitizes
+  → Field IDs mapped in Contact.tsx
+  → POST to FlexSubmit API
+  → FlexSubmit handles delivery/automation
 ```
 
-**The form data is NOT being sent anywhere!**
+**Endpoint in code:** `https://api.flexsubmit.com/api/forms/afa94b93-130a-4bb5-b9fd-54dd01fe0f03/submit`
 
-### What You Need:
-1. **Backend API** to receive form data
-2. **Email service** to send form submissions to your email
+### What You Still Need:
+1. Confirm FlexSubmit routing rules (email, CRM, webhooks)
+2. Test submissions from production (Vercel) after each deploy
 
 ---
 
@@ -348,46 +350,26 @@ You could use n8n (workflow automation) to receive webhooks and send emails.
 
 ## 7️⃣ RECOMMENDATION FOR YOUR SITE
 
-### **Best Solution: EmailJS** ✅
+### **Best Solution Right Now: FlexSubmit** ✅
 
 **Why:**
-1. ✅ Free (200 emails/month enough for contact form)
-2. ✅ 5 minutes to set up
-3. ✅ No backend needed
-4. ✅ Works with your existing React Hook Form
+1. ✅ Already implemented in `src/pages/Contact.tsx`
+2. ✅ No backend needed in this repo
+3. ✅ Works with the current Zod validation and toast UX
+4. ✅ Routing rules can be changed outside the codebase
 5. ✅ SPA-friendly (no page reload)
 
 ### **Implementation:**
 
 ```typescript
-// 1. Install
-npm install @emailjs/browser
-
-// 2. Update Contact.tsx
-import emailjs from '@emailjs/browser';
-
-const onSubmit = async (data) => {
-  try {
-    await emailjs.send(
-      'service_xyz',     // From EmailJS dashboard
-      'template_abc',    // From EmailJS dashboard
-      {
-        from_name: data.fullName,
-        from_email: data.email,
-        message: data.message,
-        to_email: 'rik@rastudio.se',
-      },
-      'public_key_123'   // From EmailJS dashboard
-    );
-    
-    toast.success('Message sent successfully!');
-  } catch (error) {
-    toast.error('Failed to send message');
-  }
-};
+const response = await fetch(FLEXSUBMIT_API, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(payload),
+});
 ```
 
-**Time to implement: 10 minutes**
+**Note:** The EmailJS and other alternatives above are still valid options, but they are not the current implementation.
 
 ---
 
@@ -399,37 +381,18 @@ User fills form
   ↓
 Zod validates data
   ↓
-React Hook Form calls onSubmit()
+Payload maps to FlexSubmit field IDs
   ↓
-onSubmit() shows success toast
+fetch(FLEXSUBMIT_API, { method: 'POST', ... })
   ↓
-BUT... data goes NOWHERE! ❌
+Success / error toast shown to user
 ```
-
-### What You Need:
-Add email sending in `onSubmit()` function in `Contact.tsx`
 
 **File:** `src/pages/Contact.tsx`
 
-**Current code (simplified):**
-```typescript
-const onSubmit = (data) => {
-  console.log(data);  // Just logs to console!
-  toast.success('Message sent!');  // Lies to user!
-};
-```
-
-**What it should be:**
-```typescript
-const onSubmit = async (data) => {
-  try {
-    await emailjs.send(...);  // Actually send email!
-    toast.success('Message sent!');
-  } catch (error) {
-    toast.error('Failed to send');
-  }
-};
-```
+**What to verify after deploys:**
+1. FlexSubmit receives submissions from production.
+2. FlexSubmit routing (email/webhooks) still fires.
 
 ---
 
@@ -453,25 +416,15 @@ const onSubmit = async (data) => {
 |-----------|--------|----------|
 | **React Hook Form** | ✅ Working | Manages form fields |
 | **Zod** | ✅ Working | Validates email format, required fields |
-| **Email Sending** | ❌ NOT WORKING | Form data goes nowhere! |
+| **Email Sending** | ✅ WORKING (FlexSubmit) | Form data POSTs to FlexSubmit API |
 | **React Query** | ⚠️ Installed but unused | Ready for future API calls |
 
 ### **Next Step:**
 
-**Choose ONE:**
-1. **EmailJS** (Easiest - 10 minutes)
-2. **Formspree** (Simple - 5 minutes but page reload)
-3. **Web3Forms** (Free unlimited - 15 minutes)
-4. **Vercel API** (Full control - 1 hour)
-5. **n8n Workflow** (Overkill for simple form)
-
----
-
-**Do you want me to implement EmailJS for you RIGHT NOW?** 🚀
-
-**It will take 10 minutes and your contact form will actually work!**
+1. Validate FlexSubmit notifications/webhooks in production.
+2. If you want vendor independence later, implement one of the alternatives above.
 
 ---
 
 **Document Created:** 4-JAN-2026 00:15 (Sweden Time) by RovoDev  
-**Status:** Waiting for user decision on email implementation
+**Status:** Updated to reflect current FlexSubmit integration in code

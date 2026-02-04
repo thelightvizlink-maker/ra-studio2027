@@ -125,16 +125,6 @@ export const it = {
     more: 'più',
   },
 
-  // Services Page
-  servicesPage: {
-    badge: 'Servizi & Prezzi',
-    title: 'Servizi Premium, ',
-    titleHighlight: 'Prezzi Accessibili',
-    subtitle: 'Cinque divisioni specializzate. Un ecosistema unificato. I primi 100 clienti ottengono prezzi esclusivi early-bird.',
-    getStarted: 'Inizia Ora',
-    first100: 'Primi 100',
-  },
-
   // About Page
   aboutPage: {
     badge: 'Chi Siamo',
@@ -208,7 +198,7 @@ export const it = {
     },
     info: {
       email: 'Email',
-      emailValue: 'contact@rastudio.dev',
+      emailValue: 'hello@rastudio.se',
       availability: 'Disponibilità',
       availabilityValue: 'Supporto Globale 24/7',
       location: 'Posizione',
@@ -263,6 +253,7 @@ export const it = {
     titleHighlight: 'Prezzi Equi',
     subtitle: 'Cinque divisioni specializzate. Un ecosistema unificato. I primi 100 clienti ottengono prezzi esclusivi early-bird.',
     getStarted: 'Inizia Ora',
+    first100: 'Primi 100',
     contactUs: 'Contattaci',
     earlyBird: 'Early Bird',
     regular: 'Regolare',

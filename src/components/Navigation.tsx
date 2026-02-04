@@ -103,7 +103,7 @@ const Navigation = () => {
           isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
         )}
       >
-        <div className="container mx-auto px-4 py-6 space-y-2">
+        <div className="container mx-auto px-4 py-6 space-y-3">
           {navItems.map((item, index) => (
             <Link
               key={item.path}
@@ -121,6 +121,19 @@ const Navigation = () => {
               {item.name}
             </Link>
           ))}
+
+          <div className="pt-4 border-t border-border/30 space-y-3">
+            <LanguageSwitcher
+              className="w-full"
+              buttonClassName="w-full justify-between"
+            />
+            <Link
+              to="/contact"
+              className="block neo-button interactive text-center text-sm text-primary hover:text-primary-foreground hover:bg-primary/20"
+            >
+              {t.nav.getStarted}
+            </Link>
+          </div>
         </div>
       </div>
     </nav>

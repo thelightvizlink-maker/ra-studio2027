@@ -1,14 +1,14 @@
 # CODING_PROGRESS.md
 
-**Last Updated:** 3-JAN-2026 23:50 (Sweden Time) by RovoDev  
-**Current Sprint:** Post-i18n Implementation & Bug Resolution
+**Last Updated:** 27-JAN-2026 (Sweden Time) by Codex  
+**Current Sprint:** Stabilization + Deployment Verification
 
 ---
 
 ## ✅ COMPLETED TASKS
 
 ### [3-JAN-2026] Internationalization Implementation
-- [x] Added 4 languages: English, Swedish, Dutch (Belgian), Italian
+- [x] Added 4 languages: English, Swedish, Dutch (Nederlands), Italian
 - [x] Created translation files (en.ts, sv.ts, nl.ts, it.ts)
 - [x] Built language switcher component with flag dropdown
 - [x] Updated all components to use translations
@@ -26,11 +26,44 @@
 - [x] Documented incident in HIGHLY_SECRETIVE.md
 - [x] **Status:** ✅ RESOLVED
 
+### [17-JAN-2026] Analytics Verification
+- [x] Google Analytics (react-ga4) present
+- [x] Cookie consent gating implemented
+- [x] Pageview logging wired
+- [x] **Status:** ✅ VERIFIED IN CODEBASE
+
+### [18-JAN-2026] Language + Pricing Expansion
+- [x] Added languages: DA, DE-DE, DE-CH, DE-LI, FR-CH, ES-ES, PT-PT (auto-detect), KO, JA, ZH-CN, ZH-HK, AR-SA
+- [x] Updated Dutch label to "Nederlands" and NL flag
+- [x] Flags for supported languages; KO/JA/ZH text-only; Saudi flag for Arabic
+- [x] RTL layout switch for Arabic (document dir + class)
+- [x] Services pricing localized per language with 5/10 rounding
+- [x] Mobile menu includes language switcher + Get Started
+- [x] **Status:** ✅ COMPLETE
+
+### [18-JAN-2026] RAG + CRM Docs
+- [x] Home page content source for RAG
+- [x] CRM chat + voice playbook
+- [x] Make.com automation cheat sheet
+- [x] **Status:** ✅ COMPLETE
+
+### [27-JAN-2026] Vercel Regression Investigation
+- [x] Fixed corrupted route line in `src/App.tsx`
+- [x] Installed missing dependency: `react-cookie-consent`
+- [x] Resolved lint errors in `command.tsx`, `textarea.tsx`, and `tailwind.config.ts`
+- [x] Verified `npm run lint` (0 errors) and `npm run build` succeed locally
+- [x] Documented findings in `docs/RA_Z_Investigation.md`
+- [x] **Status:** ✅ LOCALLY RESOLVED (needs redeploy + live verification)
+
 ---
 
 ## 🚧 IN PROGRESS
 
-*No active tasks*
+### [17-JAN-2026] QA Pass
+- [ ] Verify dropdown order, flags, and auto-detect behavior
+- [ ] Validate pricing localization output per currency
+- [ ] Confirm mobile menu UX on small screens
+- [ ] Verify RTL layout for Arabic
 
 ---
 
@@ -51,9 +84,8 @@
 - [ ] Document API endpoints (if any added)
 
 ### Low Priority
-- [ ] Add more languages (French, German, Spanish)
 - [ ] Implement URL-based routing (/en/, /sv/, etc.)
-- [ ] Add analytics (Vercel Analytics or Google Analytics)
+- [ ] Add Vercel Analytics (optional)
 - [ ] Create custom 404 page design
 - [ ] Add loading states and skeleton screens
 
@@ -70,10 +102,12 @@
 ### Testing Checklist (Use Before Every Deploy)
 - [ ] Run `npm run build` - must succeed
 - [ ] Run `npm run dev` - test locally
-- [ ] Open `localhost:8080` in browser
+- [ ] Open `http://localhost:5173` in browser
 - [ ] Test hero section renders correctly
 - [ ] Test navigation (all pages)
-- [ ] Test language switcher (all 4 languages)
+- [ ] Test language switcher (all languages)
+- [ ] Test new language dropdown rules (flags, auto-detect, text-only)
+- [ ] Test pricing localization (CHF, DKK, EUR, KRW, JPY, CNY/HKD)
 - [ ] Check browser console for errors
 - [ ] Review `git diff` line-by-line
 - [ ] Test on mobile viewport

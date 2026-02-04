@@ -208,7 +208,7 @@ export const en = {
     },
     info: {
       email: 'Email',
-      emailValue: 'contact@rastudio.dev',
+      emailValue: 'hello@rastudio.se',
       availability: 'Availability',
       availabilityValue: '24/7 Global Support',
       location: 'Location',

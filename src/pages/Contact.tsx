@@ -1,70 +1,192 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import NeomorphicCard from '@/components/NeomorphicCard';
-import { Mail, MapPin, Send, Clock, MessageSquare, CheckCircle } from 'lucide-react';
+import { Mail, MapPin, Send, Clock, MessageSquare, CheckCircle, MessageCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
-const FLEXSUBMIT_API = 'https://api.flexsubmit.com/api/forms/afa94b93-130a-4bb5-b9fd-54dd01fe0f03/submit';
+import emailjs from '@emailjs/browser';
+import ReCAPTCHA from 'react-google-recaptcha';
+
+const MIN_FILL_MS = 1500;
+const SUBMIT_COOLDOWN_MS = 15_000;
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_77l7n2o';
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+const RECAPTCHA_SITE_KEY =
+  import.meta.env.VITE_RECAPTCHA_SITE_KEY ||
+  '6Lc8-F4sAAAAAFlpj05x3aLXelBYtP6Hh34xIuPn';
+const PHONE_FALLBACK_CODE = '+1';
 
 // Input validation schema
 const contactSchema = z.object({
   fullName: z.string().trim().min(1, 'Name is required').max(100, 'Name must be less than 100 characters'),
-  companyRole: z.string().trim().max(150, 'Company/Role must be less than 150 characters').optional(),
+  companyRole: z.enum(
+    [
+      'Founder / CEO',
+      'CTO / Technical Lead',
+      'Product Manager',
+      'Marketing Lead',
+      'Operations Manager',
+      'Engineer',
+      'Designer',
+      'Sales Lead',
+      'Project Manager',
+      'Other',
+    ],
+    { errorMap: () => ({ message: 'Please select a role' }) },
+  ),
   productService: z.string().min(1, 'Please select a service'),
   inquiryDetails: z.string().trim().max(2000, 'Inquiry details must be less than 2000 characters').optional(),
-  phone: z.string().trim().max(20, 'Phone number must be less than 20 characters').regex(/^[\d\s+\-()]*$/, 'Invalid phone number format').optional().or(z.literal('')),
+  phoneNumber: z
+    .string()
+    .trim()
+    .max(20, 'Phone number must be less than 20 characters')
+    .regex(/^[\d\s+\-()]*$/, 'Invalid phone number format')
+    .optional()
+    .or(z.literal('')),
+  phoneCountryCode: z.string().trim().min(1, 'Country code is required'),
   email: z.string().trim().email('Invalid email address').max(255, 'Email must be less than 255 characters'),
-  additionalServices: z.string().trim().max(500, 'Additional services must be less than 500 characters'),
   message: z.string().trim().max(5000, 'Message must be less than 5000 characters').optional(),
-});
+  website: z.string().trim().max(200).optional(),
+}).refine(
+  (data) => (data.phoneNumber ? data.phoneCountryCode.trim().length > 0 : true),
+  { path: ['phoneCountryCode'], message: 'Country code is required when a phone number is provided' }
+);
 
 const Contact = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const pageLoadTimeRef = useRef(Date.now());
+  const lastSubmitTimeRef = useRef(0);
+  const recaptchaRef = useRef<ReCAPTCHA | null>(null);
+  const [recaptchaToken, setRecaptchaToken] = useState('');
+  const [phoneCountryCode, setPhoneCountryCode] = useState(PHONE_FALLBACK_CODE);
+  const [availableCountryCodes, setAvailableCountryCodes] = useState<string[]>([
+    PHONE_FALLBACK_CODE,
+    '+44',
+    '+46',
+    '+47',
+    '+33',
+    '+34',
+    '+39',
+    '+49',
+    '+61',
+    '+65',
+  ]);
   const [formData, setFormData] = useState({
     fullName: '',
-    companyRole: '',
+    companyRole: 'Founder / CEO',
     productService: '',
     inquiryDetails: '',
-    phone: '',
+    phoneNumber: '',
+    phoneCountryCode: PHONE_FALLBACK_CODE,
     email: '',
-    additionalServices: '',
     message: '',
+    website: '',
   });
+
+  useEffect(() => {
+    const detectCountryCode = async () => {
+      try {
+        const controller = new AbortController();
+        const timeoutId = window.setTimeout(() => controller.abort(), 4000);
+        const res = await fetch('https://ipapi.co/json/', { signal: controller.signal });
+        if (!res.ok) throw new Error('Failed to detect location');
+        const data = await res.json();
+        const code = data?.country_calling_code || PHONE_FALLBACK_CODE;
+        setPhoneCountryCode(code);
+        setFormData(prev => ({ ...prev, phoneCountryCode: code }));
+        if (!availableCountryCodes.includes(code)) {
+          setAvailableCountryCodes(prev => [code, ...prev]);
+        }
+        window.clearTimeout(timeoutId);
+      } catch (error) {
+        setPhoneCountryCode(PHONE_FALLBACK_CODE);
+        setFormData(prev => ({ ...prev, phoneCountryCode: PHONE_FALLBACK_CODE }));
+      }
+    };
+    detectCountryCode();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    
-    try {
-      // Validate input before submission
-      const validatedData = contactSchema.parse(formData);
-      
-      // Map to FlexSubmit field IDs with validated & sanitized data
-      const payload = {
-        'field_1763358633479_og0gmx0iz': validatedData.fullName,
-        'field_1763358761274_zshgnuryz': validatedData.companyRole || '',
-        'field_1763358935302_752wnf4ru': validatedData.productService,
-        'field_1763505572085_zldwid56z': validatedData.inquiryDetails || '',
-        'field_1763360341867_o06bnncyj': validatedData.phone || '',
-        'field_1763360382011_tm7e73wyo': validatedData.email,
-        'field_1763502052021_zbyphzc4f': validatedData.additionalServices,
-        'field_1763505769466_t0qha8i8e': validatedData.message || '',
-      };
+    if (isSubmitting) return;
 
-      const response = await fetch(FLEXSUBMIT_API, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
+    const now = Date.now();
+    const filledTooFast = now - pageLoadTimeRef.current < MIN_FILL_MS;
+    const isCoolingDown = now - lastSubmitTimeRef.current < SUBMIT_COOLDOWN_MS;
+    const hasHoneypotValue = formData.website.trim().length > 0;
+
+    // Silent success for obvious bot signals; avoid giving attackers feedback.
+    if (filledTooFast || hasHoneypotValue) {
+      setIsSubmitted(true);
+      toast({
+        title: 'Message sent!',
+        description: "We'll get back to you within 24 hours.",
       });
+      return;
+    }
 
-      if (!response.ok) {
-        throw new Error('Submission failed');
+    if (isCoolingDown) {
+      toast({
+        title: 'Please wait a moment',
+        description: 'Try submitting again in a few seconds.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY || !RECAPTCHA_SITE_KEY) {
+        toast({
+          title: 'Configuration error',
+          description: 'Email service or reCAPTCHA is not set up. Please contact support.',
+          variant: 'destructive',
+        });
+        return;
       }
 
+      if (!recaptchaToken) {
+        toast({
+          title: 'Verify you are human',
+          description: 'Please complete the reCAPTCHA before sending.',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      // Validate input before submission
+      const validatedData = contactSchema.parse({ ...formData, phoneCountryCode });
+
+      const formattedPhone = validatedData.phoneNumber
+        ? `${validatedData.phoneCountryCode} ${validatedData.phoneNumber}`.replace(/\s+/g, ' ').trim()
+        : 'N/A';
+      const cleanName = validatedData.fullName.replace(/\s+/g, ' ').trim();
+      const cleanMessage = (validatedData.message || '').replace(/\s+/g, ' ').trim();
+      const cleanTitle = (validatedData.productService || 'Contact Request').replace(/\s+/g, ' ').trim();
+
+      const templateParams = {
+        name: cleanName,
+        email: validatedData.email,
+        phone: formattedPhone,
+        companyRole: validatedData.companyRole,
+        productService: validatedData.productService,
+        inquiryDetails: validatedData.inquiryDetails || 'N/A',
+        message: cleanMessage || 'N/A',
+        title: cleanTitle,
+        time: new Date().toLocaleString(),
+        recaptchaToken,
+      };
+
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams, EMAILJS_PUBLIC_KEY);
+      recaptchaRef.current?.reset();
+      setRecaptchaToken('');
+
+      lastSubmitTimeRef.current = now;
       setIsSubmitted(true);
       toast({
         title: "Message sent!",
@@ -80,8 +202,8 @@ const Contact = () => {
         });
       } else {
         toast({
-          title: "Submission failed",
-          description: "Please try again or contact us directly via email.",
+          title: 'Submission failed',
+          description: 'Please try again or contact us directly via email.',
           variant: "destructive",
         });
       }
@@ -91,6 +213,9 @@ const Contact = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    if (e.target.name === 'phoneCountryCode') {
+      setPhoneCountryCode(e.target.value);
+    }
     setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -101,8 +226,20 @@ const Contact = () => {
     {
       icon: Mail,
       label: 'Email',
-      value: 'contact@rastudio.dev',
-      href: 'mailto:contact@rastudio.dev',
+      value: 'hello@rastudio.se',
+      href: 'mailto:hello@rastudio.se',
+    },
+    {
+      icon: MessageCircle,
+      label: 'WhatsApp Business',
+      value: '+46 792 012 862',
+      href: 'https://wa.me/46792012862',
+    },
+    {
+      icon: Send,
+      label: 'Telegram',
+      value: '+46 792 012 862',
+      href: 'https://t.me/+46792012862',
     },
     {
       icon: Clock,
@@ -124,6 +261,18 @@ const Contact = () => {
     'Music Production',
     'Publishing',
     'Brand Identity',
+    'Other',
+  ];
+  const roles = [
+    'Founder / CEO',
+    'CTO / Technical Lead',
+    'Product Manager',
+    'Marketing Lead',
+    'Operations Manager',
+    'Engineer',
+    'Designer',
+    'Sales Lead',
+    'Project Manager',
     'Other',
   ];
 
@@ -218,10 +367,21 @@ const Contact = () => {
             {/* Contact Form */}
             <NeomorphicCard className="lg:col-span-2 p-8">
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Honeypot field: should remain empty for real users */}
+                <input
+                  type="text"
+                  name="website"
+                  value={formData.website}
+                  onChange={handleChange}
+                  autoComplete="off"
+                  tabIndex={-1}
+                  aria-hidden="true"
+                  className="hidden"
+                />
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="fullName" className="block text-sm font-medium text-foreground mb-2">
-                      First Name & Last Name *
+                      Full Name *
                     </label>
                     <input
                       type="text"
@@ -235,88 +395,69 @@ const Contact = () => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      required
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="w-full neo-inset bg-transparent px-4 py-3 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      placeholder="john@company.com"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
                     <label htmlFor="companyRole" className="block text-sm font-medium text-foreground mb-2">
-                      Company Name & Role
-                    </label>
-                    <input
-                      type="text"
-                      id="companyRole"
-                      name="companyRole"
-                      value={formData.companyRole}
-                      onChange={handleChange}
-                      className="w-full neo-inset bg-transparent px-4 py-3 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      placeholder="Your Company - CEO"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className="w-full neo-inset bg-transparent px-4 py-3 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      placeholder="+1 234 567 8900"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="productService" className="block text-sm font-medium text-foreground mb-2">
-                      Product or Service You Are Interested In *
+                      Company Role *
                     </label>
                     <select
-                      id="productService"
-                      name="productService"
+                      id="companyRole"
+                      name="companyRole"
                       required
-                      value={formData.productService}
+                      value={formData.companyRole}
                       onChange={handleChange}
                       className="w-full neo-inset bg-transparent px-4 py-3 rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                     >
-                      <option value="" className="bg-card">Select a service</option>
-                      {services.map(service => (
-                        <option key={service} value={service} className="bg-card">
-                          {service}
+                      {roles.map(role => (
+                        <option key={role} value={role} className="bg-card">
+                          {role}
                         </option>
                       ))}
                     </select>
                   </div>
-                  <div>
-                    <label htmlFor="additionalServices" className="block text-sm font-medium text-foreground mb-2">
-                      Additional Products & Services *
-                    </label>
-                    <input
-                      type="text"
-                      id="additionalServices"
-                      name="additionalServices"
-                      required
-                      value={formData.additionalServices}
-                      onChange={handleChange}
-                      className="w-full neo-inset bg-transparent px-4 py-3 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      placeholder="Any other services needed..."
-                    />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Phone (auto-detected country code, optional) & Email *
+                  </label>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="flex gap-3">
+                      <select
+                        name="phoneCountryCode"
+                        value={phoneCountryCode}
+                        onChange={(event) => {
+                          setPhoneCountryCode(event.target.value);
+                          setFormData(prev => ({ ...prev, phoneCountryCode: event.target.value }));
+                        }}
+                        className="w-28 neo-inset bg-transparent px-3 py-3 rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      >
+                        {availableCountryCodes.map(code => (
+                          <option key={code} value={code} className="bg-card">
+                            {code}
+                          </option>
+                        ))}
+                      </select>
+                      <input
+                        type="tel"
+                        id="phoneNumber"
+                        name="phoneNumber"
+                        value={formData.phoneNumber}
+                        onChange={handleChange}
+                        className="flex-1 neo-inset bg-transparent px-4 py-3 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        placeholder="234 567 8900"
+                      />
+                    </div>
+                    <div>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="w-full neo-inset bg-transparent px-4 py-3 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        placeholder="john@company.com"
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -336,8 +477,29 @@ const Contact = () => {
                 </div>
 
                 <div>
+                  <label htmlFor="productService" className="block text-sm font-medium text-foreground mb-2">
+                    Product or Service You Are Interested In *
+                  </label>
+                  <select
+                    id="productService"
+                    name="productService"
+                    required
+                    value={formData.productService}
+                    onChange={handleChange}
+                    className="w-full neo-inset bg-transparent px-4 py-3 rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  >
+                    <option value="" className="bg-card">Select a service</option>
+                    {services.map(service => (
+                      <option key={service} value={service} className="bg-card">
+                        {service}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
                   <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
-                    Leave us a message
+                    Message
                   </label>
                   <textarea
                     id="message"
@@ -349,6 +511,18 @@ const Contact = () => {
                     placeholder="Tell us about your project: goals, timeline, examples you like..."
                   />
                 </div>
+
+                {RECAPTCHA_SITE_KEY && (
+                  <div className="flex justify-center">
+                    <ReCAPTCHA
+                      ref={recaptchaRef}
+                      sitekey={RECAPTCHA_SITE_KEY}
+                      hl="en"
+                      onChange={(token) => setRecaptchaToken(token || '')}
+                      onExpired={() => setRecaptchaToken('')}
+                    />
+                  </div>
+                )}
 
                 <button
                   type="submit"

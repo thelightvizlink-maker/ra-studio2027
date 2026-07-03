@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { LanguageProvider } from "./i18n/LanguageContext";
 import CookieConsentBanner from './components/CookieConsent';
 import { logPageView } from './lib/analytics';
@@ -65,6 +66,7 @@ const App = () => (
               <AppContent />
             </ErrorBoundary>
           </BrowserRouter>
+          <SpeedInsights />
         </TooltipProvider>
       </LanguageProvider>
     </HelmetProvider>
